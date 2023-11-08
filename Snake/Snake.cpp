@@ -3,9 +3,38 @@
 
 #include <iostream>
 
+using namespace std;
+
+const int WITCH = 40;
+const int HEIGHT = 15;
+
+void writeBoard(string* boardBuffer);
+
 int main()
 {
-    std::cout << "Hello World!\n";
+    string buffer;
+    writeBoard(&buffer);
+}
+
+void writeBoard(string* boardBuffer) {
+    for (int i = 0; i < HEIGHT; i++) {
+        if (i == 0 || i == HEIGHT - 1) {
+            for (int j = 0; j < WITCH; j++)
+                *boardBuffer += "#";
+        }
+        else {
+            for (int j = 0; j < WITCH; j++) {
+                if (j == 0 || j == WITCH - 1)
+                    *boardBuffer += "#";
+                else
+                    *boardBuffer += " ";
+            }
+        }
+
+        *boardBuffer += "\n";
+    }
+
+    cout << *boardBuffer << endl;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
