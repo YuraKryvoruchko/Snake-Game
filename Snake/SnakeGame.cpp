@@ -14,7 +14,7 @@ Fruit currentFruit = Fruit(Vector2(4, 17), 1, 'F');
 
 const int BOARD_WITCH = 25;
 const int BOARD_HEIGHT = 25;
-const int FRAME_RATE_IN_MS = 25;
+const int FRAME_RATE_IN_MS = 5;
 
 const Vector2 SNAKE_START_POSITION = Vector2((int)BOARD_WITCH/2, (int)BOARD_HEIGHT/2);
 
@@ -48,7 +48,7 @@ int main()
             system("cls");
             snake.walk();
             if(j < 5)
-                snake.eat(&currentFruit);
+                snake.eat(currentFruit);
             writeBoard(snake);
             i = 0;
         }
