@@ -13,3 +13,12 @@ Vector2::Vector2(int x, int y) {
 	X = x;
 	Y = y;
 }
+
+Vector2 operator +(Vector2 a, Vector2 b) {
+	Vector2 newVector(a.X + b.X, a.Y + b.Y);
+	return newVector;
+}
+Vector2 operator -(Vector2 a, Vector2 b) {
+	Vector2 newVector(a.X - b.X, a.Y - b.Y);
+	return newVector;
+}

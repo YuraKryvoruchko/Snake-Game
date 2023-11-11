@@ -13,6 +13,9 @@ struct Vector2
 
 	Vector2();
 	Vector2(int x, int y);
+
+	friend Vector2 operator +(Vector2 a, Vector2 b);
+	friend Vector2 operator -(Vector2 a, Vector2 b);
 };
 
 #endif
