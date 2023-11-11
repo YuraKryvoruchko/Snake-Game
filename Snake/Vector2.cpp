@@ -15,10 +15,20 @@ Vector2::Vector2(int x, int y) {
 }
 
 Vector2 operator +(Vector2 a, Vector2 b) {
-	Vector2 newVector(a.X + b.X, a.Y + b.Y);
-	return newVector;
+	return Vector2(a.X + b.X, a.Y + b.Y);;
 }
 Vector2 operator -(Vector2 a, Vector2 b) {
-	Vector2 newVector(a.X - b.X, a.Y - b.Y);
-	return newVector;
+	return Vector2(a.X - b.X, a.Y - b.Y);
+}
+Vector2 operator *(Vector2 a, int n) {
+	return Vector2(a.X * n, a.Y * n);
+}
+Vector2 operator *(int n, Vector2 a) {
+	return Vector2(a.X * n, a.Y * n);
+}
+Vector2 operator /(Vector2 a, int n) {
+	return Vector2(a.X / n, a.Y / n);
+}
+Vector2 operator /(int n, Vector2 a) {
+	return Vector2(a.X / n, a.Y / n);
 }

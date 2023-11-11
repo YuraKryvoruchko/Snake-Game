@@ -16,6 +16,10 @@ struct Vector2
 
 	friend Vector2 operator +(Vector2 a, Vector2 b);
 	friend Vector2 operator -(Vector2 a, Vector2 b);
+	friend Vector2 operator *(Vector2 a, int n);
+	friend Vector2 operator *(int n, Vector2 a);
+	friend Vector2 operator /(Vector2 a, int n);
+	friend Vector2 operator /(int n, Vector2 a);
 };
 
 #endif
