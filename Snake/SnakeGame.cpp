@@ -1,76 +1,91 @@
 // SnakeGame.cpp : This file contains the 'main' function. Program execution begins and ends there.
 
+#include <cstdlib> 
+#include <ctime> 
 #include <iostream>
 #include <windows.h>
 #include "SnakeHead.h"
 #include "Vector2.h"
 #include "Fruit.h"
+#include "PlayerInput.h"
 
 using namespace std;
 
-bool keys[4] = {false, false, false, false};
-
-Fruit currentFruit = Fruit(Vector2(4, 17), 1, 'F');
-
 const int BOARD_WITCH = 25;
 const int BOARD_HEIGHT = 25;
+const int MAX_BONUS = 3;
 const int FRAME_RATE_IN_MS = 5;
 
 const Vector2 SNAKE_START_POSITION = Vector2((int)BOARD_WITCH/2, (int)BOARD_HEIGHT/2);
 
-void writeBoard(SnakeHead snake);
+SnakeHead* snake;
+Fruit* currentFruit;
+
+void writeBoard();
 string getClearBoard();
+Fruit* getNewFruit();
 int converteVector2ToStringPosition(Vector2 position);
 
 int main()
 {
+    srand((unsigned)time(NULL));
+
     bool isGameOver = false;
-    SnakeHead snake(SNAKE_START_POSITION);
-    snake.changeDirection(Vector2::RIGHT);
+    snake = new SnakeHead(SNAKE_START_POSITION);
+    (*snake).changeDirection(Vector2::RIGHT);
+    currentFruit = getNewFruit();
 
     int i = 0;
-    int j = 0;
     while (isGameOver == false) {
-        keys[0] = (GetAsyncKeyState('A') & 0x8000);
-        keys[1] = (GetAsyncKeyState('D') & 0x8000);
-        keys[2] = (GetAsyncKeyState('W') & 0x8000);
-        keys[3] = (GetAsyncKeyState('S') & 0x8000);
-        if (keys[0] == true)
-            snake.changeDirection(Vector2::LEFT);
-        if (keys[1] == true)
-            snake.changeDirection(Vector2::RIGHT);
-        if (keys[2] == true)
-            snake.changeDirection(Vector2::DOWN);
-        if (keys[3] == true)
-            snake.changeDirection(Vector2::UP); 
+        PlayerInput::updateInput();
+        if (PlayerInput::isInput() == true) {
+            Vector2 inputDirection = PlayerInput::getDirection();
+            (*snake).changeDirection(inputDirection);
+        }
 
         if (i == 2) {
             system("cls");
-            snake.walk();
-            if(j < 5)
-                snake.eat(currentFruit);
-            writeBoard(snake);
+            (*snake).walk();
+
+            for (auto element : (*snake).getBodyElements()) {
+                if ((*snake).getPosition() == element.getPosition()) {
+                    isGameOver = true;
+                }
+            }
+            if ((*snake).getPosition() == (*currentFruit).getPosition()) {
+                (*snake).eat(*currentFruit);
+                delete currentFruit;
+                currentFruit = getNewFruit();
+            }
+
+            writeBoard();
             i = 0;
         }
         else {
             i++;
-            j++;
         }
 
         Sleep(FRAME_RATE_IN_MS);
     }
+
+    delete snake;
+    delete currentFruit;
+
+    cout << "Game Over" << endl;
+
+    return 0;
 }
 
-void writeBoard(SnakeHead snake) {
+void writeBoard() {
     string board = getClearBoard();
-    int stringSnakePosition = converteVector2ToStringPosition(snake.getPosition());
+    int stringSnakePosition = converteVector2ToStringPosition((*snake).getPosition());
     board[stringSnakePosition] = 'O';
-    for (auto element : snake.getBodyElements()) {
+    for (auto element : (*snake).getBodyElements()) {
         int stringElementPosition = converteVector2ToStringPosition(element.getPosition());
         board[stringElementPosition] = 'B';
     }
-    int stringFruitPosition = converteVector2ToStringPosition(currentFruit.getPosition());
-    board[stringFruitPosition] = currentFruit.getTexture();
+    int stringFruitPosition = converteVector2ToStringPosition((*currentFruit).getPosition());
+    board[stringFruitPosition] = (*currentFruit).getTexture();
 
     cout << board << endl;
 }
@@ -94,6 +109,13 @@ string getClearBoard() {
     }
 
     return board;
+}
+Fruit* getNewFruit() {
+    int xPosition = (rand() % (BOARD_WITCH - 1)) + 1;
+    int yPosition = (rand() % (BOARD_HEIGHT - 1)) + 1;
+    int bonus = (rand() % MAX_BONUS) + 1;
+
+    return new Fruit(Vector2(xPosition, yPosition), bonus);
 }
 int converteVector2ToStringPosition(Vector2 position) {
     return ((position.Y - 1) * (BOARD_WITCH + 1)) + position.X;

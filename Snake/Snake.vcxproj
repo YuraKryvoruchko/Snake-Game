@@ -128,16 +128,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Fruit.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="PlayerInput.cpp" />
     <ClCompile Include="SnakeGame.cpp" />
     <ClCompile Include="SnakeBody.cpp" />
     <ClCompile Include="SnakeHead.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Board.h" />
     <ClInclude Include="Fruit.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="PlayerInput.h" />
     <ClInclude Include="SnakeBody.h" />
     <ClInclude Include="SnakeHead.h" />
     <ClInclude Include="Vector2.h" />

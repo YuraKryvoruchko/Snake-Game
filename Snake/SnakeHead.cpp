@@ -6,7 +6,8 @@ SnakeHead::SnakeHead(Vector2 startPosition) {
 }
 
 void SnakeHead::changeDirection(Vector2 direction) {
-	_direction = direction;
+	if(_direction * (-1) != direction)
+		_direction = direction;
 }
 void SnakeHead::walk() {
 	Vector2 currentPosition = getPosition();
@@ -21,7 +22,8 @@ void SnakeHead::walk() {
 }
 void SnakeHead::eat(Fruit fruit) {
 	Vector2 snakePosition = getPosition();
-	_bodyElements.insert(_bodyElements.begin(), SnakeBody(snakePosition - _direction));
+	for(int i = 0; i < fruit.getBonus(); i++)
+		_bodyElements.insert(_bodyElements.begin(), SnakeBody(snakePosition - i * _direction));
 }
 Vector2 SnakeHead::getDirection() {
 	return _direction;
