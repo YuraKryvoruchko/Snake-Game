@@ -10,10 +10,14 @@ struct Vector2
 	static const Vector2 DOWN;
 	static const Vector2 RIGHT;
 	static const Vector2 LEFT;
+	static const Vector2 ZERO;
+	static const Vector2 ONE;
 
 	Vector2();
 	Vector2(int x, int y);
 
+	friend bool operator ==(Vector2 a, Vector2 b);
+	friend bool operator !=(Vector2 a, Vector2 b);
 	friend Vector2 operator +(Vector2 a, Vector2 b);
 	friend Vector2 operator -(Vector2 a, Vector2 b);
 	friend Vector2 operator *(Vector2 a, int n);
