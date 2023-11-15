@@ -33,6 +33,7 @@ int main()
     srand((unsigned)time(NULL));
 
     bool isGameOver = false;
+    GameObject::setBoardSize(Vector2(BOARD_WITCH, BOARD_HEIGHT));
     snake = new SnakeHead(SNAKE_START_POSITION);
     board = string(BOARD_HEIGHT * (BOARD_WITCH + 1), '#');
     (*snake).changeDirection(Vector2::RIGHT);
@@ -48,8 +49,7 @@ int main()
             (*snake).changeDirection(inputDirection);
         }
 
-        if (i == 2) {
-            system("cls");
+        if (i == 2) {   
             (*snake).walk();
 
             for (auto element : (*snake).getBodyElements()) {
@@ -63,6 +63,7 @@ int main()
                 currentFruit = getNewFruit();
             }
 
+            system("cls");
             writeBoard();
             i = 0;
         }
