@@ -4,6 +4,7 @@
 #include <ctime> 
 #include <iostream>
 #include <windows.h>
+#include <thread>
 #include "SnakeHead.h"
 #include "Vector2.h"
 #include "Fruit.h"
@@ -18,11 +19,12 @@ const int FRAME_RATE_IN_MS = 5;
 
 const Vector2 SNAKE_START_POSITION = Vector2((int)BOARD_WITCH/2, (int)BOARD_HEIGHT/2);
 
+string board;
 SnakeHead* snake;
 Fruit* currentFruit;
 
 void writeBoard();
-string getClearBoard();
+void clearBoard();
 Fruit* getNewFruit();
 int converteVector2ToStringPosition(Vector2 position);
 
@@ -32,11 +34,14 @@ int main()
 
     bool isGameOver = false;
     snake = new SnakeHead(SNAKE_START_POSITION);
+    board = string(BOARD_HEIGHT * (BOARD_WITCH + 1), '#');
     (*snake).changeDirection(Vector2::RIGHT);
     currentFruit = getNewFruit();
 
     int i = 0;
     while (isGameOver == false) {
+        this_thread::sleep_for(chrono::milliseconds(FRAME_RATE_IN_MS));
+
         PlayerInput::updateInput();
         if (PlayerInput::isInput() == true) {
             Vector2 inputDirection = PlayerInput::getDirection();
@@ -64,8 +69,6 @@ int main()
         else {
             i++;
         }
-
-        Sleep(FRAME_RATE_IN_MS);
     }
 
     delete snake;
@@ -77,7 +80,7 @@ int main()
 }
 
 void writeBoard() {
-    string board = getClearBoard();
+    clearBoard();
     int stringSnakePosition = converteVector2ToStringPosition((*snake).getPosition());
     board[stringSnakePosition] = 'O';
     for (auto element : (*snake).getBodyElements()) {
@@ -89,26 +92,13 @@ void writeBoard() {
 
     cout << board << endl;
 }
-string getClearBoard() {
-    string board;
-    for (int i = 0; i < BOARD_HEIGHT; i++) {
-        if (i == 0 || i == BOARD_HEIGHT - 1) {
-            for (int j = 0; j < BOARD_WITCH; j++)
-                board += "#";
-        }
-        else {
-            for (int j = 0; j < BOARD_WITCH; j++) {
-                if (j == 0 || j == BOARD_WITCH - 1)
-                    board += "#";
-                else
-                    board += " ";
-            }
-        }
-
-        board += "\n";
+void clearBoard() {
+    for (int i = 1; i < BOARD_HEIGHT + 1; i++)
+        board[((BOARD_WITCH + 1) * i) - 1] = '\n';
+    for (int i = 1; i < BOARD_HEIGHT - 1; i++) {
+        for (int j = 1; j < BOARD_WITCH - 1; j++)
+            board[((BOARD_WITCH + 1) * i) + j] = ' ';
     }
-
-    return board;
 }
 Fruit* getNewFruit() {
     int xPosition = (rand() % (BOARD_WITCH - 1)) + 1;
